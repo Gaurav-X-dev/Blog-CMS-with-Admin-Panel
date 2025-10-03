@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Bookmarking</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+  
+<style>
+    body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  padding-top: 0; /* No gap between navbars */
+  color: #333;
+}
+
+/* Upper Navbar: Animated Running Categories */
+.top-navbar {
+  position: relative;
+  width: 100%;
+  z-index: 1030;
+  background: linear-gradient(90deg, #34495e, #2c3e50); /* Darker, more professional gradient */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* More pronounced shadow */
+  overflow: hidden;
+  height: 45px; /* Slightly taller */
+  display: flex;
+  align-items: center;
+}
+
+.running-categories-wrapper {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.running-categories-content {
+  display: inline-block;
+  animation: scrollCategories 35s linear infinite; /* Slower animation */
+  padding-left: 100%;
+}
+
+.running-category-item {
+  color: #e0e0e0; /* Lighter text for better contrast */
+  text-decoration: none;
+  font-weight: 500;
+  margin-right: 40px; /* More spacing */
+  padding: 6px 12px;
+  border-radius: 20px; /* More rounded pills */
+  background-color: rgba(255, 255, 255, 0.1); /* More subtle background */
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+  display: inline-block;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+.running-category-item:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px);
+  color: #fff;
+}
+
+.top-navbar .fw-bold {
+  color: #fff; /* Ensure trending categories text is white */
+  font-size: 1rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+@keyframes scrollCategories {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Main Navbar adjustment */
+.navbar.sticky-top {
+  top: 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.6rem;
+  letter-spacing: 0.5px;
+  color: #333 !important;
+}
+
+.navbar-logo {
+  color: #0d6efd;
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: rotate(-10deg) scale(1.1);
+}
+
+.navbar-tech-logo {
+  color: #1abc9c; /* Green accent for tech logo */
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.navbar-tech-logo:hover {
+  transform: rotate(15deg) scale(1.1);
+}
+
+.navbar-nav .nav-link {
+  color: #555 !important;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #0d6efd !important;
+  transform: translateY(-2px);
+}
+
+/* Category Navbar */
+.category-navbar {
+  background-color: #f8f9fa; /* Light background */
+  border-bottom: 1px solid #e9ecef;
+  padding: 10px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.category-navbar .container {
+  justify-content: center; /* Center categories on desktop */
+  overflow-x: auto; /* Enable horizontal scrolling for categories on mobile */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  padding-bottom: 10px; /* Space for scrollbar */
+}
+
+.category-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px; /* Larger padding */
+  margin: 0 8px; /* Reduced margin for more items */
+  text-decoration: none;
+  color: #555;
+  font-weight: 600; /* Bolder text */
+  border-radius: 25px; /* More rounded pills */
+  transition: all 0.3s ease;
+  white-space: nowrap; /* Prevent wrapping on small screens */
+  flex-shrink: 0; /* Prevent items from shrinking */
+  background-color: #e9ecef; /* Light background for pills */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.category-nav-item:hover {
+  background-color: #d0d4d8; /* Darker on hover */
+  color: #0d6efd;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons with Icons - Heavy CSS */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px; /* Slightly larger padding */
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px; /* More rounded */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Default shadow */
+  position: relative; /* For pseudo-elements */
+  overflow: hidden; /* For hover effects */
+  z-index: 1;
+}
+
+.icon-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1); /* Light overlay */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-out;
+  z-index: -1;
+}
+
+.icon-button:hover::before {
+  transform: scaleX(1);
+}
+
+.icon-button svg {
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+.icon-button:hover {
+  transform: translateY(-3px); /* Lift on hover */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.icon-button:hover svg {
+  transform: scale(1.1);
+}
+
+.btn-outline-primary.icon-button {
+  border-color: #0d6efd;
+  color: #0d6efd;
+  background-color: transparent;
+}
+
+.btn-outline-primary.icon-button:hover {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.btn-primary.icon-button {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+}
+
+.btn-primary.icon-button:hover {
+  background-color: #0a58ca; /* Darker blue on hover */
+  border-color: #0a58ca;
+}
+
+.btn-success.icon-button {
+  background-color: #28a745; /* Standard green */
+  border-color: #28a745;
+  color: #fff;
+}
+
+.btn-success.icon-button:hover {
+  background-color: #218838; /* Darker green on hover */
+  border-color: #1e7e34;
+}
+
+/* Hero Showcase Section (New Style) */
+.hero-showcase-new {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); /* Light, subtle gradient */
+  min-height: 700px; /* Adjusted height for two rows */
+  padding: 40px 0; /* Adjusted padding */
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.03); /* Very subtle inner shadow */
+}
+
+.hero-showcase-new .container-fluid {
+  height: 100%; /* Ensure container-fluid takes full height */
+}
+
+.hero-text-content {
+  padding: 20px;
+  max-width: 500px;
+}
+
+.hero-text-content .hero-title-new {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.hero-text-content .hero-subtitle-new {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.hero-links-card-light {
+  background: linear-gradient(145deg, #ffffff, #f0f2f5); /* Subtle gradient for depth */
+  border-radius: 18px; /* More rounded corners */
+  border: 1px solid rgba(0, 0, 0, 0.08); /* Lighter, more subtle border */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(0, 0, 0, 0.08); /* Enhanced shadows */
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transitions */
+  overflow: hidden;
+  min-height: 280px; /* Changed from fixed height to min-height */
+  display: flex; /* Added flexbox for internal layout */
+  flex-direction: column; /* Stack children vertically */
+  justify-content: center;
+  position: relative; /* For potential pseudo-elements */
+}
+
+.hero-links-card-light:hover {
+  transform: translateY(-15px) scale(1.03); /* More pronounced lift and slight scale */
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25), 0 10px 20px rgba(0, 0, 0, 0.15); /* Even stronger shadow on hover */
+}
+
+.hero-links-card-light h3 {
+  color: #333;
+  font-weight: 800;
+  margin-bottom: 1.8rem;
+  text-shadow: none;
+  font-size: 1.8rem;
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+}
+
+.hero-links-card-light h3::after {
+  background-color: #0d6efd;
+}
+
+.hero-links-carousel-wrapper {
+  flex-grow: 1; /* Added to take up remaining space */
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center; /* Center the carousel vertically */
+}
+
+.hero-links-carousel {
+  position: absolute;
+  width: 100%;
+  height: 100%; /* Ensure it fills the wrapper */
+  top: 0;
+  left: 0;
+  transition: transform 0.5s ease-in-out; /* Smooth slide transition */
+  padding-left: 0; /* Remove default ul padding */
+  margin-bottom: 0; /* Remove default ul margin */
+}
+
+.hero-link-item-dark {
+  color: #555;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: color 0.3s ease, transform 0.2s ease, background-color 0.3s ease;
+  font-size: 1.15rem;
+  position: relative;
+  height: 45px; /* Fixed height for each link item */
+}
+
+.hero-link-item-dark:last-child {
+  border-bottom: none;
+}
+
+.hero-link-item-dark:hover {
+  color: #0d6efd;
+  transform: translateX(8px);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.hero-link-item-dark::before {
+  content: "🔗";
+  margin-right: 10px;
+  font-size: 1.2em;
+  color: #888;
+  transition: color 0.3s ease;
+}
+
+.hero-link-item-dark:hover::before {
+  color: #0d6efd;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px; /* Hidden by default */
+  width: 280px;
+  height: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 1040; /* Above navbar */
+  transition: left 0.3s ease-in-out;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.sidebar-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 5px; /* Reduced margin */
+}
+
+.sidebar-nav-item {
+  display: block;
+  padding: 12px 15px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-nav-item:hover {
+  background-color: #e9ecef;
+  color: #0d6efd;
+  transform: translateX(5px);
+}
+
+.sidebar-dropdown-toggle {
+  width: 100%;
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 15px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-dropdown-toggle:hover {
+  background-color: #f0f2f5;
+}
+
+.sidebar-dropdown-toggle svg {
+  transition: transform 0.3s ease;
+}
+
+.sidebar-dropdown-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.sidebar-dropdown-menu {
+  list-style: none;
+  padding: 0;
+  margin: 5px 0 10px 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.sidebar-dropdown-menu.show {
+  max-height: 300px; /* Adjust as needed to fit all items */
+}
+
+.sidebar-dropdown-menu .sidebar-nav-item {
+  padding-left: 30px; /* Indent dropdown items */
+  font-size: 0.95rem;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1035; /* Between navbar and sidebar */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.sidebar-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Main Content Section - White Background */
+.main-content-white-bg {
+  background-color: #ffffff !important; /* White background */
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.main-content-white-bg .container {
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.section-title-dark {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0d6efd; /* Changed to blue */
+  position: relative;
+  padding-bottom: 15px;
+  margin-bottom: 40px !important;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.section-title-dark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: #0d6efd; /* Blue underline */
+  border-radius: 2px;
+}
+
+/* Bookmark Grid and Item Styling (New Card Design) */
+.bookmark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Adjusted min-width for better mobile fit */
+  gap: 30px;
+  padding-right: 0; /* Removed padding-right for full width on mobile */
+}
+
+.bookmark-item {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+}
+
+.bookmark-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.bookmark-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333; /* Changed to black */
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.bookmark-meta-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 15px;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.bookmark-meta-line span,
+.bookmark-meta-line a {
+  display: flex;
+  align-items: center;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.bookmark-meta-line a:hover {
+  color: #c0392b; /* Hover color for links */
+}
+
+.bookmark-meta-line svg {
+  margin-right: 6px;
+  color: #999;
+  width: 18px;
+  height: 18px;
+}
+
+.bookmark-description {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  flex-grow: 1;
+}
+
+.bookmark-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.bookmark-readmore-btn {
+  background-color: #fff;
+  color: #0d6efd;
+  border: 1px solid #0d6efd;
+  padding: 8px 18px;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.bookmark-readmore-btn:hover {
+  background-color: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+
+.bookmark-category-badge {
+  background-color: #0d6efd; /* Changed to blue */
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex; /* To align image and text */
+  align-items: center;
+}
+
+.bookmark-category-badge img {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  filter: invert(100%) brightness(200%); /* Make icon white on colored badge */
+}
+
+.bookmark-category-badge:hover {
+  background-color: #0a58ca; /* Darker blue on hover */
+  transform: translateY(-2px);
+}
+
+/* Popular Bookmarking Sidebar (Increased width) */
+.popular-bookmarks-sidebar {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  margin-left: 0; /* Removed margin to extend to corner */
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+}
+
+.popular-bookmarks-heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0d6efd; /* Changed to blue */
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.popular-bookmarks-heading::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60px;
+  height: 3px;
+  background-color: #1abc9c;
+  border-radius: 2px;
+}
+
+.popular-bookmark-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.popular-bookmark-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.popular-bookmark-item:hover {
+  transform: translateX(5px);
+  background-color: #f8f9fa;
+}
+
+.popular-bookmark-item h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.popular-bookmark-item-meta {
+  font-size: 0.75rem;
+  color: #999;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 10px;
+}
+
+.popular-bookmark-item-meta span {
+  display: flex;
+  align-items: center;
+}
+
+.popular-bookmark-item-meta svg {
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  color: #b0b0b0;
+}
+
+/* Footer - Heavy CSS */
+footer {
+  background: linear-gradient(90deg, #2c3e50, #34495e);
+  color: #ecf0f1;
+  padding: 60px 0;
+  border-top: 5px solid #1abc9c;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.footer-logo-container {
+  display: flex; /* Changed to flex */
+  flex-direction: row; /* Changed to row */
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  gap: 15px; /* Space between logo and text */
+}
+
+.footer-logo {
+  color: #1abc9c;
+  margin-bottom: 0; /* Removed margin-bottom */
+  transition: transform 0.4s ease;
+  width: 60px;
+  height: 60px;
+}
+
+.footer-logo:hover {
+  transform: rotate(15deg) scale(1.2);
+}
+
+.footer-logo-text {
+  font-size: 2.2rem;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.social-icons-footer {
+  margin-top: 0;
+  margin-bottom: 2.5rem;
+}
+
+.social-icon-link {
+  color: #ecf0f1;
+  margin: 0 18px;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+.social-icon-link svg {
+  width: 36px;
+  height: 36px;
+  vertical-align: middle;
+}
+
+.social-icon-link:hover {
+  color: #1abc9c;
+  transform: translateY(-7px) scale(1.2);
+}
+
+.footer-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.95;
+  font-weight: 300;
+}
+
+/* Floating "Go Up" Button */
+#backToTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background-color: #1abc9c;
+  border: none;
+  z-index: 1000;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease;
+}
+
+#backToTopBtn:hover {
+  background-color: #2ecc71;
+  transform: translateY(-5px);
+}
+
+#backToTopBtn svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* Pagination Styling */
+.custom-pagination .page-item .page-link {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  color: #0d6efd;
+  font-weight: 600;
+  margin: 0 5px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-pagination .page-item .page-link:hover {
+  background-color: #e9ecef;
+  color: #0a58ca;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-pagination .page-item.active .page-link {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.4);
+  transform: translateY(-2px);
+}
+
+.custom-pagination .page-item.active .page-link:hover {
+  background-color: #0a58ca;
+  border-color: #0a58ca;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* General fade-in animation for hero elements (used by JS) */
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  /* Bootstrap's lg breakpoint */
+  .popular-bookmarks-sidebar {
+    margin-top: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: static; /* Remove sticky on mobile */
+    width: 100%; /* Full width on mobile */
+  }
+
+  .bookmark-grid {
+    padding-right: 0; /* Ensure no extra padding on mobile */
+  }
+
+  .hero-showcase-new {
+    min-height: auto; /* Allow height to adjust on mobile */
+    padding: 40px 0;
+  }
+
+  .hero-showcase-new .row {
+    flex-direction: column; /* Stack columns vertically on mobile */
+  }
+
+  /* Adjust order for mobile to ensure text is above links in first row, and links above text in second row */
+  .hero-showcase-new .row:nth-child(1) .col-md-6:nth-child(1) {
+    /* Text column in first row */
+    order: 1;
+  }
+  .hero-showcase-new .row:nth-child(1) .col-md-6:nth-child(2) {
+    /* Links column in first row */
+    order: 2;
+  }
+
+  .hero-showcase-new .row:nth-child(2) .col-md-6:nth-child(1) {
+    /* Links column in second row */
+    order: 2; /* Changed order to place card after text in the overall flow */
+  }
+  .hero-showcase-new .row:nth-child(2) .col-md-6:nth-child(2) {
+    /* Text column in second row */
+    order: 1; /* Changed order to place text before card in the overall flow */
+  }
+
+  .hero-links-card-light {
+    margin-bottom: 20px; /* Add space between cards on mobile */
+    height: auto; /* Allow height to adjust for content */
+  }
+
+  .hero-text-content {
+    margin-bottom: 20px; /* Add space below text content on mobile */
+  }
+
+  /* Hide desktop category navbar on mobile */
+  .category-navbar.d-lg-block {
+    display: none !important;
+  }
+
+  /* Show main navbar toggler on mobile */
+  .navbar-toggler {
+    display: block !important;
+  }
+
+  /* Hide desktop login/register/submit buttons on mobile */
+  .navbar-nav.ms-auto.d-lg-flex {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  /* Bootstrap's md breakpoint */
+  .hero-showcase-new {
+    padding: 40px 0;
+  }
+
+  .hero-text-content .hero-title-new {
+    font-size: 2.2rem;
+  }
+
+  .hero-text-content .hero-subtitle-new {
+    font-size: 1rem;
+  }
+
+  .icon-button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .icon-button svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+  }
+
+  .navbar-brand {
+    font-size: 1.4rem;
+  }
+
+  .footer-logo-text {
+    font-size: 1.8rem;
+  }
+
+  .social-icon-link svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Upper Navbar: Animated Running Categories -->
+    <div class="top-navbar py-2">
+        <div class="container-fluid">
+            <div class="running-categories-wrapper">
+                <div class="running-categories-content">
+                    <span class="me-3 fw-bold">Trending Categories:</span>
+                    <a href="#" class="running-category-item">AI</a>
+                    <a href="#" class="running-category-item">Web3</a>
+                    <a href="#" class="running-category-item">DevOps</a>
+                    <a href="#" class="running-category-item">Cybersecurity</a>
+                    <a href="#" class="running-category-item">Cloud Computing</a>
+                    <a href="#" class="running-category-item">Machine Learning</a>
+                    <a href="#" class="running-category-item">Frontend Dev</a>
+                    <a href="#" class="running-category-item">Backend Dev</a>
+                    <a href="#" class="running-category-item">Data Science</a>
+                    <a href="#" class="running-category-item">Mobile Dev</a>
+                    <!-- Duplicate content for seamless loop -->
+                    <span class="me-3 fw-bold ms-5">Trending Categories:</span>
+                    <a href="#" class="running-category-item">AI</a>
+                    <a href="#" class="running-category-item">Web3</a>
+                    <a href="#" class="running-category-item">DevOps</a>
+                    <a href="#" class="running-category-item">Cybersecurity</a>
+                    <a href="#" class="running-category-item">Cloud Computing</a>
+                    <a href="#" class="running-category-item">Machine Learning</a>
+                    <a href="#" class="running-category-item">Frontend Dev</a>
+                    <a href="#" class="running-category-item">Backend Dev</a>
+                    <a href="#" class="running-category-item">Data Science</a>
+                    <a href="#" class="running-category-item">Mobile Dev</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <svg class="navbar-logo me-2" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Active Bookmarking
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Categories dropdown removed -->
+                </ul>
+                <ul class="navbar-nav ms-auto d-none d-lg-flex"> <!-- Hide on mobile, show on desktop -->
+                    <li class="nav-item ms-lg-3">
+                        <button class="btn btn-outline-primary me-2 animate-btn icon-button" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                            Login
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary me-2 animate-btn icon-button" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            Register
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-success animate-btn icon-button" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1"><path d="M14.5 4L19 8.5V20a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h5.5L14.5 4z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="17" x2="12" y2="11"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+                            Submit Story
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Category Navbar (Desktop View) -->
+    <nav class="category-navbar bg-light shadow-sm py-2 d-none d-lg-block">
+        <div class="container d-flex justify-content-center flex-wrap">
+            <a href="#" class="category-nav-item">Technology</a>
+            <a href="#" class="category-nav-item">Design</a>
+            <a href="#" class="category-nav-item">Development</a>
+            <a href="#" class="category-nav-item">AI</a>
+            <a href="#" class="category-nav-item">Security</a>
+            <a href="#" class="category-nav-item">Cloud Computing</a>
+            <a href="#" class="category-nav-item">Data Science</a>
+            <a href="#" class="category-nav-item">Mobile Dev</a>
+        </div>
+    </nav>
+
+    <!-- Sidebar for Mobile Navigation -->
+    <div class="sidebar" id="sidebarMenu">
+        <div class="sidebar-header">
+            <h5 class="sidebar-title">AB</h5>
+            <button type="button" class="btn-close text-reset" aria-label="Close" id="sidebarClose"></button>
+        </div>
+        <ul class="sidebar-nav">
+            <li>
+                <button class="sidebar-nav-item sidebar-dropdown-toggle" type="button" aria-expanded="false">
+                    Categories
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ms-auto feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <ul class="sidebar-dropdown-menu list-unstyled">
+                    <li><a href="#" class="sidebar-nav-item">Technology</a></li>
+                    <li><a href="#" class="sidebar-nav-item">Design</a></li>
+                    <li><a href="#" class="sidebar-nav-item">Development</a></li>
+                    <li><a href="#" class="sidebar-nav-item">AI</a></li>
+                    <li><a href="#" class="sidebar-nav-item">Security</a></li>
+                    <li><a href="#" class="sidebar-nav-item">Cloud Computing</a></li>
+                    <li><a href="#" class="sidebar-nav-item">Data Science</a></li>
+                    <li><a href="#" class="sidebar-nav-item">Mobile Dev</a></li>
+                </ul>
+            </li>
+            <li>
+                <button class="sidebar-nav-item sidebar-dropdown-toggle" type="button" aria-expanded="false">
+                    Account
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ms-auto feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <ul class="sidebar-dropdown-menu list-unstyled">
+                    <li><a href="#" class="sidebar-nav-item">Login</a></li>
+                    <li><a href="#" class="sidebar-nav-item">Register</a></li>
+                    <li><a href="#" class="sidebar-nav-item">Submit Story</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Hero Showcase Section (New Style) -->
+    <header class="hero-showcase-new d-flex flex-column">
+        <div class="container-fluid flex-grow-1 d-flex flex-column">
+            <!-- First horizontal half -->
+            <div class="row flex-grow-1 align-items-center py-4 py-md-0">
+                <div class="col-md-6 d-flex justify-content-center align-items-center order-md-1 order-1">
+                    <div class="hero-text-content text-center text-md-start">
+                        <h3 class="hero-title-new">Discover & Organize Your Web</h3>
+                        <p class="hero-subtitle-new">Effortlessly save, categorize, and share your favorite online resources with our intuitive platform.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex justify-content-center align-items-center order-md-2 order-2">
+                    <div class="hero-links-card-light p-4 w-100">
+                        <h3 class="mb-3 text-dark">My Bookmarking Websites</h3>
+                        <div class="hero-links-carousel-wrapper">
+                            <ul class="list-unstyled hero-links-carousel" id="my-bookmarks-carousel">
+                                <li><a href="#" class="hero-link-item-dark">MyTechBookmarks.com</a></li>
+                                <li><a href="#" class="hero-link-item-dark">DesignLinkHub.net</a></li>
+                                <li><a href="#" class="hero-link-item-dark">DevResourceVault.org</a></li>
+                                <li><a href="#" class="hero-link-item-dark">CreativeLinkShare.co</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Second horizontal half -->
+            <div class="row flex-grow-1 align-items-center py-4 py-md-0">
+                <div class="col-md-6 d-flex justify-content-center align-items-center order-md-1 order-1">
+                    <div class="hero-links-card-light p-4 w-100">
+                        <h3 class="mb-3 text-dark">Latest Links <span class="badge bg-primary ms-2">NEW</span></h3>
+                        <div class="hero-links-carousel-wrapper">
+                            <ul class="list-unstyled hero-links-carousel" id="latest-links-carousel">
+                                <li><a href="#" class="hero-link-item-dark">BookmarkPro.io - The Ultimate Tool</a></li>
+                                <li><a href="#" class="hero-link-item-dark">LinkSavvy.app - Smart Organization</a></li>
+                                <li><a href="#" class="hero-link-item-dark">WebGems.xyz - Curated Collections</a></li>
+                                <li><a href="#" class="hero-link-item-dark">QuickMark.dev - Fast & Simple</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex justify-content-center align-items-center order-md-2 order-2">
+                    <div class="hero-text-content text-center text-md-start">
+                        <h3 class="hero-title-new">Stay Ahead with Curated Content</h3>
+                        <p class="hero-subtitle-new">Explore a vibrant community of shared knowledge and never miss a trend in your field.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Section: Explore Bookmarks -->
+    <main class="py-5 main-content-white-bg">
+        <div class="container">
+            <h2 class="text-center mb-5 section-title-dark">Explore Bookmarks</h2>
+            <div class="row">
+                <!-- Main Bookmarks (75% width) -->
+                <div class="col-lg-8">
+                    <div class="row bookmark-grid" id="bookmark-grid-container">
+                        <!-- Bookmark boxes will be dynamically loaded here by JS -->
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation example" class="mt-5">
+                        <ul class="pagination justify-content-center custom-pagination" id="pagination-controls">
+                            <!-- Pagination links will be generated by JavaScript -->
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Popular Bookmarking Sidebar (25% width) -->
+                <div class="col-lg-4">
+                    <div class="popular-bookmarks-sidebar">
+                        <h3 class="popular-bookmarks-heading">Popular Bookmarkings</h3>
+                        <div id="popular-bookmarks-container">
+                            <!-- Popular bookmark items will be loaded here by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container text-center">
+            <!-- New Footer Buttons -->
+            <div class="d-flex justify-content-center flex-wrap mb-4 gap-3">
+                <button class="btn btn-outline-light animate-btn icon-button" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Feedback
+                </button>
+                <button class="btn btn-outline-light animate-btn icon-button" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Support
+                </button>
+                <button class="btn btn-outline-light animate-btn icon-button" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Careers
+                </button>
+            </div>
+
+            <div class="footer-logo-container mb-4">
+                <svg class="footer-logo" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span class="footer-logo-text">Active Bookmarking</span>
+            </div>
+            <div class="social-icons-footer mb-4">
+                <a href="#" class="social-icon-link" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="#" class="social-icon-link" aria-label="Twitter">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 11.4-12.4 10.3 1.5 1.4 3.3 2.3 5.2 2.3 6.9 0 11.3-5.6 11.3-11.3 0-.3 0-.5-.1-.8C20.2 6.5 21.3 5.1 22 4z"></path></svg>
+                </a>
+                <a href="#" class="social-icon-link" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="#" class="social-icon-link" aria-label="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+            </div>
+            <p class="mb-0 footer-text">Copyright © 2025 Active Bookmarking Inc. All rights reserved. Registration on or use of this site constitutes acceptance of our Terms of Service and Privacy Policy.</p>
+        </div>
+    </footer>
+
+    <!-- Floating "Go Up" Button -->
+    <button id="backToTopBtn" class="btn btn-primary rounded-circle shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+    </button>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  // Button hover animations
+  const buttons = document.querySelectorAll(".animate-btn")
+  buttons.forEach((button) => {
+    button.addEventListener("mouseenter", () => {
+      button.style.transform = "translateY(-5px)"
+      button.style.boxShadow = "0 8px 20px rgba(0, 0, 0, 0.3)"
+    })
+    button.addEventListener("mouseleave", () => {
+      button.style.transform = "translateY(0)"
+      button.style.boxShadow = "none"
+    })
+  })
+
+  // Hero Section Link Cycling in Boxes
+  const myBookmarksCarousel = document.getElementById("my-bookmarks-carousel")
+  const latestLinksCarousel = document.getElementById("latest-links-carousel")
+
+  function setupCarousel(carouselElement) {
+    const items = Array.from(carouselElement.children)
+    if (items.length === 0) return // No items to cycle
+
+    const itemHeight = items[0].offsetHeight // Get height of first item
+    let currentIndex = 0
+
+    // Duplicate items to ensure seamless loop
+    items.forEach((item) => {
+      carouselElement.appendChild(item.cloneNode(true))
+    })
+
+    function cycleLinks() {
+      currentIndex++
+      if (currentIndex >= items.length) {
+        // If we've reached the end of the original items, smoothly transition to the duplicated set
+        // Then, instantly reset to the beginning of the original set to create a loop illusion
+        carouselElement.style.transform = `translateY(-${currentIndex * itemHeight}px)`
+        setTimeout(() => {
+          carouselElement.style.transition = "none" // Disable transition for instant reset
+          currentIndex = 0
+          carouselElement.style.transform = `translateY(-${currentIndex * itemHeight}px)`
+          // Re-enable transition after a very short delay
+          setTimeout(() => {
+            carouselElement.style.transition = "transform 0.5s ease-in-out"
+          }, 50)
+        }, 500) // Match this with the transition duration
+      } else {
+        carouselElement.style.transform = `translateY(-${currentIndex * itemHeight}px)`
+      }
+    }
+
+    // Start cycling after a short delay
+    setInterval(cycleLinks, 2000) // Change every 2 seconds
+  }
+
+  // Ensure DOM is ready before setting up carousels
+  if (myBookmarksCarousel) {
+    setupCarousel(myBookmarksCarousel)
+  }
+  if (latestLinksCarousel) {
+    setupCarousel(latestLinksCarousel)
+  }
+
+  // Floating "Go Up" Button Logic
+  const backToTopBtn = document.getElementById("backToTopBtn")
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      // Show button after scrolling 300px
+      backToTopBtn.style.opacity = 1
+      backToTopBtn.style.visibility = "visible"
+    } else {
+      backToTopBtn.style.opacity = 0
+      backToTopBtn.style.visibility = "hidden"
+    }
+  })
+
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Smooth scroll to top
+    })
+  })
+
+  // Sidebar Logic
+  const sidebarToggle = document.querySelector(".navbar-toggler") // Use the existing navbar toggler
+  const sidebarMenu = document.getElementById("sidebarMenu")
+  const sidebarClose = document.getElementById("sidebarClose")
+  const sidebarOverlay = document.getElementById("sidebarOverlay")
+
+  function openSidebar() {
+    sidebarMenu.classList.add("open")
+    sidebarOverlay.classList.add("open")
+    document.body.style.overflow = "hidden" // Prevent scrolling body when sidebar is open
+  }
+
+  function closeSidebar() {
+    sidebarMenu.classList.remove("open")
+    sidebarOverlay.classList.remove("open")
+    document.body.style.overflow = "" // Restore body scrolling
+  }
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener("click", openSidebar)
+  }
+  if (sidebarClose) {
+    sidebarClose.addEventListener("click", closeSidebar)
+  }
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener("click", closeSidebar)
+  }
+
+  // Sidebar Dropdown Logic
+  const dropdownToggles = document.querySelectorAll(".sidebar-dropdown-toggle")
+  dropdownToggles.forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+      const dropdownMenu = toggle.nextElementSibling
+      if (dropdownMenu && dropdownMenu.classList.contains("sidebar-dropdown-menu")) {
+        const isExpanded = toggle.getAttribute("aria-expanded") === "true"
+        toggle.setAttribute("aria-expanded", !isExpanded)
+        dropdownMenu.classList.toggle("show")
+        dropdownMenu.style.maxHeight = isExpanded ? "0" : `${dropdownMenu.scrollHeight}px`
+      }
+    })
+  })
+
+  // Bookmark Data (Example - limited to 5 categories with placeholder images)
+  const allBookmarks = [
+    {
+      title: "2025 CIO Agenda: Top Priorities and Technology Plans for State and Provincial Governments",
+      author: "viky",
+      category: "Technology",
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Analyst(s): Todd Kimbriel, Nora Reavey-Gilbert CIOs must be prepared to adjust their technology investment and deployment strategies to meet the evolving expectations of their leaders and the public.",
+      views: "11",
+      time: "6 days ago",
+    },
+    {
+      title: "The Future of AI in Web Dev: A Deep Dive",
+      author: "Alice Johnson",
+      category: "AI",
+      link: "#",
+      sourceLink: "#",
+      description:
+        "An in-depth look at how AI is transforming web development practices and tools. This article covers various aspects from AI-powered code generation to intelligent testing frameworks, highlighting the potential impact on developer workflows and project efficiency.",
+      views: "1.2K",
+      time: "2 days ago",
+    },
+    {
+      title: "Mastering Modern CSS Layouts for Responsive Design",
+      author: "Bob Williams",
+      category: "Design",
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Explore advanced CSS Grid and Flexbox techniques for responsive designs. Learn how to build complex layouts with ease, ensuring your websites look great on any device, from mobile phones to large desktop monitors. Includes practical examples and best practices.",
+      views: "980",
+      time: "1 week ago",
+    },
+    {
+      title: "Serverless Architectures Explained: A Beginner's Guide",
+      author: "Charlie Brown",
+      category: "Development",
+      link: "#",
+      sourceLink: "#",
+      description:
+        "A beginner-friendly guide to building scalable applications with serverless functions. Understand the core concepts, benefits, and common use cases of serverless computing, and how it can reduce operational overhead and costs for your projects.",
+      views: "1.5K",
+      time: "3 days ago",
+    },
+    {
+      title: "Best Practices for Robust API Design",
+      author: "Diana Miller",
+      category: "Development",
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Learn how to create robust, maintainable, and secure APIs for your projects. This guide covers RESTful principles, authentication strategies, versioning, and documentation, essential for building reliable and developer-friendly APIs.",
+      views: "750",
+      time: "4 days ago",
+    },
+    {
+      title: "New Trends in Frontend Frameworks: What's Next?",
+      author: "Eve Davis",
+      category: "Technology",
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Discover the latest innovations and emerging frameworks in frontend development. From performance optimizations to new state management patterns, stay updated with the tools and techniques shaping the future of web interfaces.",
+      views: "1.1K",
+      time: "5 days ago",
+    },
+    {
+      title: "Understanding WebAssembly Basics for Web Performance",
+      author: "Frank White",
+      category: "Development",
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Get started with WebAssembly and unlock new performance possibilities for web apps. This introduction explains what WebAssembly is, how it works, and how you can use it to run high-performance code directly in the browser, enhancing web application capabilities.",
+      views: "620",
+      time: "1 week ago",
+    },
+    {
+      title: "Optimizing Database Queries for Scale: Strategies and Techniques",
+      author: "Grace Taylor",
+      category: "Security", // Changed to Security
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Techniques and strategies to ensure your database queries perform efficiently under heavy load. Covers indexing, query optimization, denormalization, and caching strategies to improve database response times and overall application performance.",
+      views: "890",
+      time: "6 days ago",
+    },
+    {
+      title: "Introduction to Quantum Computing: The Basics",
+      author: "Henry Wilson",
+      category: "AI", // Changed to AI
+      link: "#",
+      sourceLink: "#",
+      description:
+        "A high-level overview of quantum computing concepts and its potential impact. Explore the fundamental principles of quantum mechanics applied to computation, and the exciting possibilities it holds for solving complex problems beyond classical computers.",
+      views: "450",
+      time: "2 weeks ago",
+    },
+    {
+      title: "Effective UI/UX Prototyping: Tools and Methods",
+      author: "Ivy Moore",
+      category: "Design",
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Tools and methods for rapid prototyping to validate your UI/UX ideas quickly. Learn how to create interactive prototypes that simulate user experience, gather feedback efficiently, and iterate on designs before committing to development.",
+      views: "700",
+      time: "3 days ago",
+    },
+    {
+      title: "Building Progressive Web Apps: A Comprehensive Guide",
+      author: "Jack Green",
+      category: "Development",
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Transform your website into an installable, app-like experience with PWAs. This guide covers service workers, manifest files, and other PWA features that enable offline capabilities, push notifications, and faster loading times for web applications.",
+      views: "1.3K",
+      time: "1 day ago",
+    },
+    {
+      title: "Cybersecurity Essentials for Developers: Secure Coding",
+      author: "Karen Hall",
+      category: "Security",
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Key security principles and practices every developer should know to build secure applications. Topics include common vulnerabilities, secure coding guidelines, data protection, and authentication best practices to safeguard your applications from threats.",
+      views: "910",
+      time: "4 days ago",
+    },
+    {
+      title: "Data Visualization with D3.js: Interactive Charts",
+      author: "Liam King",
+      category: "Technology", // Changed to Technology
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Create stunning and interactive data visualizations using the D3.js library. Learn to bind data to DOM elements, apply transitions, and build custom charts and graphs that effectively communicate insights from your datasets.",
+      views: "800",
+      time: "5 days ago",
+    },
+    {
+      title: "Cloud Native Development Patterns: Best Practices",
+      author: "Mia Wright",
+      category: "Development", // Changed to Development
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Explore common patterns and best practices for building applications in cloud environments. This article discusses microservices, containerization, serverless, and other cloud-native approaches that enhance scalability, resilience, and agility.",
+      views: "1.0K",
+      time: "1 week ago",
+    },
+    {
+      title: "Getting Started with Rust: A Practical Introduction",
+      author: "Noah Turner",
+      category: "Technology", // Changed to Technology
+      link: "#",
+      sourceLink: "#",
+      description:
+        "A practical introduction to the Rust programming language for systems development. Discover Rust's focus on memory safety, performance, and concurrency, and how it can be used for building reliable and efficient software.",
+      views: "550",
+      time: "2 days ago",
+    },
+    {
+      title: "The Art of Technical Writing: Tips and Tricks",
+      author: "Olivia Baker",
+      category: "Design", // Changed to Design
+      link: "#",
+      sourceLink: "#",
+      description:
+        "Tips and tricks for writing clear, concise, and effective technical documentation. Learn how to structure your content, use appropriate language, and create user-friendly guides that help your audience understand complex technical topics.",
+      views: "300",
+      time: "3 weeks ago",
+    },
+  ]
+
+  const bookmarksPerPage = 9 // Show 9 bookmarks per page
+  const totalPages = Math.ceil(allBookmarks.length / bookmarksPerPage)
+  let currentPage = 1
+
+  const bookmarkGridContainer = document.getElementById("bookmark-grid-container")
+  const paginationControls = document.getElementById("pagination-controls")
+  const popularBookmarksContainer = document.getElementById("popular-bookmarks-container")
+
+  function renderBookmarks(page) {
+    bookmarkGridContainer.innerHTML = "" // Clear existing bookmarks
+    const startIndex = (page - 1) * bookmarksPerPage
+    const endIndex = startIndex + bookmarksPerPage
+    const bookmarksToRender = allBookmarks.slice(startIndex, endIndex)
+
+    bookmarksToRender.forEach((bookmark) => {
+      const bookmarkItem = document.createElement("div")
+      bookmarkItem.classList.add("col-md-12", "mb-4") // Each card takes full width in its column
+      bookmarkItem.innerHTML = `
+        <div class="bookmark-item">
+          <h5 class="bookmark-title">${bookmark.title}</h5>
+          <div class="bookmark-meta-line">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              ${bookmark.author}
+            </span>
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              ${bookmark.time}
+            </span>
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              ${bookmark.views} views
+            </span>
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+              ${bookmark.category}
+            </span>
+            <a href="${bookmark.sourceLink}" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07L9.54 2.46c-.9.9-1.34 2.07-1.34 3.24S8.64 7.7 9.54 8.6L12 11"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07L14.46 21.54c.9-.9 1.34-2.07 1.34-3.24S15.36 16.3 14.46 15.4L12 13"></path></svg>
+              Source
+            </a>
+          </div>
+          <p class="bookmark-description">${bookmark.description}</p>
+          <div class="bookmark-actions">
+            <button class="bookmark-readmore-btn">Read more</button>
+            <a href="#" class="bookmark-category-badge">
+              ${bookmark.category}
+            </a>
+          </div>
+        </div>
+      `
+      bookmarkGridContainer.appendChild(bookmarkItem)
+    })
+  }
+
+  function renderPagination(activePage) {
+    paginationControls.innerHTML = "" // Clear existing pagination
+
+    // Previous button
+    const prevItem = document.createElement("li")
+    prevItem.classList.add("page-item")
+    if (activePage === 1) prevItem.classList.add("disabled")
+    prevItem.innerHTML = `<a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>`
+    prevItem.addEventListener("click", (e) => {
+      e.preventDefault()
+      if (activePage > 1) {
+        currentPage--
+        updatePage(currentPage)
+      }
+    })
+    paginationControls.appendChild(prevItem)
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+      const pageItem = document.createElement("li")
+      pageItem.classList.add("page-item")
+      if (i === activePage) pageItem.classList.add("active")
+      pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`
+      pageItem.addEventListener("click", (e) => {
+        e.preventDefault()
+        currentPage = i
+        updatePage(currentPage)
+      })
+      paginationControls.appendChild(pageItem)
+    }
+
+    // Next button
+    const nextItem = document.createElement("li")
+    nextItem.classList.add("page-item")
+    if (activePage === totalPages) nextItem.classList.add("disabled")
+    nextItem.innerHTML = `<a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>`
+    nextItem.addEventListener("click", (e) => {
+      e.preventDefault()
+      if (activePage < totalPages) {
+        currentPage++
+        updatePage(currentPage)
+      }
+    })
+    paginationControls.appendChild(nextItem)
+  }
+
+  function renderPopularBookmarks() {
+    popularBookmarksContainer.innerHTML = "" // Clear existing
+    // For popular, let's just take the first 5 for now, or you can sort by views later
+    const popularBookmarks = allBookmarks.slice(0, 5)
+
+    popularBookmarks.forEach((bookmark, index) => {
+      const popularItem = document.createElement("div")
+      popularItem.classList.add("popular-bookmark-item")
+      popularItem.innerHTML = `
+        <h6>${bookmark.title}</h6>
+        <div class="popular-bookmark-item-meta">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            ${bookmark.views}
+          </span>
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            ${bookmark.time}
+          </span>
+        </div>
+      `
+      popularBookmarksContainer.appendChild(popularItem)
+
+      // Apply fade-in animation
+      setTimeout(() => {
+        popularItem.style.opacity = 1
+        popularItem.style.transform = "translateY(0)"
+      }, 100 * index) // Staggered animation
+    })
+  }
+
+  function updatePage(pageNumber) {
+    renderBookmarks(pageNumber)
+    renderPagination(pageNumber)
+    window.scrollTo({ top: document.querySelector("main").offsetTop, behavior: "smooth" }) // Scroll to main content
+  }
+
+  // Initial render
+  updatePage(currentPage)
+  renderPopularBookmarks() // Render popular bookmarks on load
+})
+
+    </script>
+</body>
+</html>
